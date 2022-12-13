@@ -16,7 +16,8 @@ import java.util.List;
 public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    long movie_id;
+    long id;
+    String imdb_id;
     String name;
     LocalDateTime releaseDate;
     int rating;

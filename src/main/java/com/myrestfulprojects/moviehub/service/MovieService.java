@@ -1,9 +1,9 @@
 package com.myrestfulprojects.moviehub.service;
 
+import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.Movie;
-import com.myrestfulprojects.moviehub.service.repository.MovieRepository;
+import com.myrestfulprojects.moviehub.model.MovieShort;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.ImdbClient;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +18,16 @@ public class MovieService {
         throw new IllegalStateException("Not implemented yet!");
     }
 
-    public MovieDto getApiMovie(String id) {
+    public MovieFull getApiMovie(String id) {
         return imdbClient.getMovie(id);
+    }
+    public List<MovieShort> getApiTrendyMovies() {
+        return imdbClient.getTrendyMovies();
     }
 
     public Movie getMovie(long id) {
         //return movieRepository.findById(id).orElseThrow();
         throw new IllegalStateException("Not implemented yet!");
-
     }
 
 }

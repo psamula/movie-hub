@@ -1,8 +1,9 @@
 package com.myrestfulprojects.moviehub.controller;
 
+import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.Movie;
+import com.myrestfulprojects.moviehub.model.MovieShort;
 import com.myrestfulprojects.moviehub.service.MovieService;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,11 @@ public class MovieController {
         return movieService.getMovie(id);
     }
     @GetMapping("/movie/{id}")
-    public MovieDto getMovieApi(@PathVariable String id) {
+    public MovieFull getApiMovie(@PathVariable String id) {
         return movieService.getApiMovie(id);
+    }
+    @GetMapping("/movies/trendy")
+    public List<MovieShort> getApiTrendyMovies() {
+        return movieService.getApiTrendyMovies();
     }
 }
