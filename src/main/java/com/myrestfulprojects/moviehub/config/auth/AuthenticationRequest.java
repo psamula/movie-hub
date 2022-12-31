@@ -5,12 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
 @Getter
 @Setter
-
 public class AuthenticationRequest {
-    private final String username;
-    private final String password;
+    private String username;
+    private String password;
 }

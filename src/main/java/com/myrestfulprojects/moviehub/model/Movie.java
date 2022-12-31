@@ -9,10 +9,9 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RequiredArgsConstructor
+@Entity
 @Getter
 @Setter
-@ToString
 public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -21,7 +20,7 @@ public class Movie {
     String name;
     LocalDateTime releaseDate;
     int rating;
-    @ManyToMany(cascade = CascadeType.ALL)
-    List<CastMember> castMembers;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    List<CastMember> castMembers;
 
 }

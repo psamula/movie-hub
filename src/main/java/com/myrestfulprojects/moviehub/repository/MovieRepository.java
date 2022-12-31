@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.service.repository;
+package com.myrestfulprojects.moviehub.repository;
 
 import com.myrestfulprojects.moviehub.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;

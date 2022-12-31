@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,7 +24,6 @@ import javax.crypto.SecretKey;
 public class SecurityConfig {
     private final UserRepository userRepository;
     private final JwtConfig jwtConfig;
-    private final AuthenticationManager authenticationManager;
     private final SecretKey secretKey;
     private static final String[] AUTH_WHITELIST = {
 
@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated())
-                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager, jwtConfig))
+                .addFilter(new JwtUsernamePasswordAuthenticationFilter(this.authenticationManagerBean(http), jwtConfig))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests()
                 .and()
@@ -73,5 +73,11 @@ public class SecurityConfig {
         provider.setPasswordEncoder(this.passwordEncoder());
         provider.setUserDetailsService(this.userDetailsService());
         return provider;
+    }
+    @Bean
+    public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(this.userDetailsService()).passwordEncoder(this.passwordEncoder());
+        return authenticationManagerBuilder.build();
     }
 }
