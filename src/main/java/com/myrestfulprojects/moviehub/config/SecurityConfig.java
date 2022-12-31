@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.SecretKey;
+import java.util.Arrays;
 
 @EnableWebSecurity
 @Configuration
@@ -30,7 +32,9 @@ public class SecurityConfig {
             //login and register
             "/login",
             "/register",
-
+            "/v2/api-docs",
+            "/webjars/**",
+            "/swagger-resources/**",
             // -- Swagger UI v2
             "/v2/api-docs",
             "/swagger-resources",
@@ -41,6 +45,7 @@ public class SecurityConfig {
             "/webjars/**",
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
+            "/swagger-ui/",
             "/swagger-ui/**"
     };
     @Bean
@@ -48,9 +53,9 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
+                        .mvcMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated())
-                .addFilter(new JwtUsernamePasswordAuthenticationFilter(this.authenticationManagerBean(http), jwtConfig))
+                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests()
                 .and()
@@ -75,9 +80,7 @@ public class SecurityConfig {
         return provider;
     }
     @Bean
-    public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(this.userDetailsService()).passwordEncoder(this.passwordEncoder());
-        return authenticationManagerBuilder.build();
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(Arrays.asList(daoAuthenticationProvider()));
     }
 }

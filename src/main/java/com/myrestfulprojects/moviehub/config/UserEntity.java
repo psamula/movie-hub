@@ -1,7 +1,6 @@
 package com.myrestfulprojects.moviehub.config;
 
-import jakarta.persistence.Table;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -12,7 +11,11 @@ import java.util.UUID;
 @Table(name = "users")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
     @Column(name = "username", nullable = false)
