@@ -50,19 +50,29 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
                     .map(a -> new SimpleGrantedAuthority(a.get("authority")))
                     .collect(Collectors.toSet());
-            Authentication authentication = new UsernamePasswordAuthenticationToken(username, simpleGrantedAuthorities);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, simpleGrantedAuthorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (ExpiredJwtException e) {
-            throw new RuntimeException(e);
+            // The JWT token has expired
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The JWT token has expired");
+            return;
         } catch (UnsupportedJwtException e) {
-            throw new RuntimeException(e);
+            // The JWT token is not supported
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The JWT token is not supported");
+            return;
         } catch (MalformedJwtException e) {
-            throw new RuntimeException(e);
+            // The JWT token is malformed
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The JWT token is malformed");
+            return;
         } catch (SignatureException e) {
-            throw new RuntimeException(e);
+            // The JWT signature is invalid
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The JWT signature is invalid");
+            return;
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
+            // The JWT token is empty or null
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The JWT token is empty or null");
         }
 
+        filterChain.doFilter(request, response);
     }
 }

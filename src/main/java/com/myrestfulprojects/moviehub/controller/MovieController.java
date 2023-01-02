@@ -32,4 +32,8 @@ public class MovieController {
     public List<MovieShort> getApiTrendyMovies() {
         return movieService.getApiTrendyMovies();
     }
+    @GetMapping("/movies/test/")
+    public String returnTest() {
+        return "returned Test string";
+    }
 }

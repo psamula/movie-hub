@@ -36,6 +36,8 @@ public class SecurityConfig {
 
             //login and register
             "/login",
+            "/swagger-ui/*",
+            "/swagger-ui/#",
             "/swagger-ui/#/login-controller/**",
             "/swagger-ui/#/login-controller/",
             "/register",
@@ -52,15 +54,13 @@ public class SecurityConfig {
             "/webjars/**",
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
-            "/swagger-ui/",
-            "/swagger-ui/**"
     };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .mvcMatchers("/**").permitAll()
+                        .mvcMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated())
                 .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
