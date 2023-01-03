@@ -10,6 +10,6 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
-@Table(name = "DirectorShort")
+@Table(name = "directorshort")
 public class DirectorShortEntity extends CastMemberShortEntity {
 }

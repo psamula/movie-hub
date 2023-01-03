@@ -3,9 +3,7 @@ package com.myrestfulprojects.moviehub.model.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
@@ -13,11 +11,16 @@ import javax.validation.constraints.NotNull;
 @Getter
 public abstract class CastMemberShortEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @NotNull
+    @Column(name = "movieid")
     private Long movieId;
     @NotNull
+    @Column(name = "imdbid")
     private String imdbId;
     @NotNull
+    @Column(name = "name")
     private String name;
 }

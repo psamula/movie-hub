@@ -3,11 +3,11 @@ package com.myrestfulprojects.moviehub.controller;
 import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.Movie;
 import com.myrestfulprojects.moviehub.model.MovieShort;
+import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
+import com.myrestfulprojects.moviehub.model.rating.Rating;
 import com.myrestfulprojects.moviehub.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,8 +32,8 @@ public class MovieController {
     public List<MovieShort> getApiTrendyMovies() {
         return movieService.getApiTrendyMovies();
     }
-    @GetMapping("/movies/test/")
-    public String returnTest() {
-        return "returned Test string";
+    @PostMapping("/rate/movies")
+    public void rateMovie(@RequestParam(required = true) Rating rating, @RequestParam(required = true) String imdbId) {
+        movieService.rateMovie(imdbId, rating);
     }
 }

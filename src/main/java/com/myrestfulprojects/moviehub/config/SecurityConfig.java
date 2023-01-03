@@ -2,6 +2,7 @@ package com.myrestfulprojects.moviehub.config;
 
 import com.myrestfulprojects.moviehub.config.auth.JwtConfig;
 import com.myrestfulprojects.moviehub.repository.UserRepository;
+import com.myrestfulprojects.moviehub.service.AuthorizedUserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -90,5 +91,9 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager() {
         return new ProviderManager(Arrays.asList(daoAuthenticationProvider()));
+    }
+    @Bean
+    public AuthorizedUserFacade authorizedUserFacade() {
+        return new AuthorizedUserFacade(userRepository);
     }
 }

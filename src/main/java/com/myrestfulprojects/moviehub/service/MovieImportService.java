@@ -30,7 +30,7 @@ public class MovieImportService {
     private final MovieRoleRepository movieRoleRepository;
 
     @Transactional
-    public void SaveMovieFromApi(String imdbId) {
+    public MovieEntity saveMovieFromApi(String imdbId) {
         var apiMovie =  imdbClient.getMovie(imdbId);
         MovieEntity movieEntity = createMovieEntity(apiMovie);
         movieRepository.save(movieEntity);
@@ -59,8 +59,7 @@ public class MovieImportService {
         movieRoleRepository.saveAll(movieRoleEntities);
         movieEntity.setActorList(movieRoleEntities);
         movieRepository.save(movieEntity);
-
-
+        return movieEntity;
     }
     private MovieEntity createMovieEntity (MovieFull apiMovie) {
         MovieEntity movieEntity = new MovieEntity();

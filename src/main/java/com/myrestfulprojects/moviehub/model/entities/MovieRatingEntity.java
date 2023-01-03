@@ -1,29 +1,28 @@
 package com.myrestfulprojects.moviehub.model.entities;
 
 import com.myrestfulprojects.moviehub.config.UserEntity;
-import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.rating.Rating;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "MovieRating")
+@Table(name = "movierating")
 public class MovieRatingEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
-    private UserEntity userId;
+    private UserEntity user;
 
     @ManyToOne
-    private MovieEntity movieId;
+    private MovieEntity movie;
 
-    @Enumerated(EnumType.ORDINAL)
-    private Rating rating;
+    @Column(name = "rating")
+    private int rating;
 }
