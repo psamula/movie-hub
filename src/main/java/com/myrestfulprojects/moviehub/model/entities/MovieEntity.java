@@ -5,6 +5,8 @@ import com.myrestfulprojects.moviehub.model.entities.castMemberShorts.StarShortE
 import com.myrestfulprojects.moviehub.model.entities.castMemberShorts.WriterShortEntity;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.CastMemberShortDto;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieRoleDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

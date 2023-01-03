@@ -2,7 +2,9 @@ package com.myrestfulprojects.moviehub.model.entities;
 
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieFullDto;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieParticipationDto;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
