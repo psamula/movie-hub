@@ -1,11 +1,12 @@
 package com.myrestfulprojects.moviehub.repository;
 
 import com.myrestfulprojects.moviehub.model.Movie;
+import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long> {
+public interface MovieRepository extends JpaRepository<MovieEntity, Long> {
     
 }
