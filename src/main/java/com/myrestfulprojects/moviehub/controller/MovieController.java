@@ -3,6 +3,8 @@ package com.myrestfulprojects.moviehub.controller;
 import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.Movie;
 import com.myrestfulprojects.moviehub.model.MovieShort;
+import com.myrestfulprojects.moviehub.model.MovieWithRatingDTO;
+import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
 import com.myrestfulprojects.moviehub.model.rating.Rating;
 import com.myrestfulprojects.moviehub.service.MovieService;
@@ -35,5 +37,9 @@ public class MovieController {
     @PostMapping("/rate/movies")
     public void rateMovie(@RequestParam(required = true) Rating rating, @RequestParam(required = true) String imdbId) {
         movieService.rateMovie(imdbId, rating);
+    }
+    @GetMapping("/user/movies")
+    public List<MovieWithRatingDTO> getRatedMovies() {
+        return movieService.getRatedMovies();
     }
 }

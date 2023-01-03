@@ -4,6 +4,7 @@ import com.myrestfulprojects.moviehub.config.UserEntity;
 import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.Movie;
 import com.myrestfulprojects.moviehub.model.MovieShort;
+import com.myrestfulprojects.moviehub.model.MovieWithRatingDTO;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
 import com.myrestfulprojects.moviehub.model.rating.Rating;
@@ -15,7 +16,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class MovieService {
@@ -52,5 +56,15 @@ public class MovieService {
         movieRatingEntity.setMovie(movieEntity);
         movieRatingEntity.setUser(currentUser);
         movieRatingRepository.save(movieRatingEntity);
+    }
+
+    public List<MovieWithRatingDTO> getRatedMovies() {
+        var userId = authorizedUserFacade.getCurrentUserId();
+        List<MovieWithRatingDTO> moviesWithUserRatings = movieRatingRepository.findAll().stream()
+                .filter(m -> m.getUser().getId() == userId)
+                .map(m -> new MovieWithRatingDTO(m.getMovie(), m.getRating()))
+                .collect(Collectors.toList());
+        return moviesWithUserRatings;
+
     }
 }
