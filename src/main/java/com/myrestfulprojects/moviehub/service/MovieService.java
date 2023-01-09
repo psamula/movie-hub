@@ -1,10 +1,11 @@
 package com.myrestfulprojects.moviehub.service;
 
 import com.myrestfulprojects.moviehub.config.UserEntity;
+import com.myrestfulprojects.moviehub.exceptions.DuplicateEntityException;
 import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.Movie;
 import com.myrestfulprojects.moviehub.model.MovieShort;
-import com.myrestfulprojects.moviehub.model.MovieWithRatingDTO;
+import com.myrestfulprojects.moviehub.model.rating.MovieWithRatingDTO;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
 import com.myrestfulprojects.moviehub.model.rating.Rating;
@@ -15,8 +16,8 @@ import com.myrestfulprojects.moviehub.webclient.imdbApi.ImdbClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,9 +50,20 @@ public class MovieService {
 
     @Transactional
     public void rateMovie(String imdbId, Rating rating) {
+
+        UserEntity currentUser = userRepository.findById(authorizedUserFacade.getCurrentUserId()).orElseThrow(EntityNotFoundException::new);
+        MovieEntity movieEntity = movieImportService.getOrCreateMovieFromApi(imdbId);
+        var existingMovieRating = movieRatingRepository.findByUserAndMovie(currentUser, movieEntity);
+
+        if (existingMovieRating.isPresent()) {
+            if (existingMovieRating.get().getRating() == rating.getValue()) {
+                throw new DuplicateEntityException("Already rated!");
+            }
+            existingMovieRating.get().setRating(rating.getValue());
+            movieRatingRepository.save(existingMovieRating.get());
+            return;
+        }
         MovieRatingEntity movieRatingEntity = new MovieRatingEntity();
-        UserEntity currentUser = userRepository.findById(authorizedUserFacade.getCurrentUserId()).orElseThrow(IllegalStateException::new);
-        MovieEntity movieEntity = movieImportService.saveMovieFromApi(imdbId);
         movieRatingEntity.setRating(rating.getValue());
         movieRatingEntity.setMovie(movieEntity);
         movieRatingEntity.setUser(currentUser);
@@ -60,11 +72,11 @@ public class MovieService {
 
     public List<MovieWithRatingDTO> getRatedMovies() {
         var userId = authorizedUserFacade.getCurrentUserId();
-        List<MovieWithRatingDTO> moviesWithUserRatings = movieRatingRepository.findAll().stream()
+        return movieRatingRepository.findAll().stream()
                 .filter(m -> m.getUser().getId() == userId)
                 .map(m -> new MovieWithRatingDTO(m.getMovie(), m.getRating()))
                 .collect(Collectors.toList());
-        return moviesWithUserRatings;
 
     }
+
 }

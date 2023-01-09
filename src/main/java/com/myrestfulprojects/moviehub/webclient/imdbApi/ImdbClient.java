@@ -1,11 +1,9 @@
 package com.myrestfulprojects.moviehub.webclient.imdbApi;
 
+import com.myrestfulprojects.moviehub.model.CastMemberFull;
 import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.MovieShort;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieFullDto;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieRoleDto;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieShortDto;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieShortDtoWrapper;
+import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +20,23 @@ public class ImdbClient {
     private static final String IMDB_URL = "https://imdb-api.com/en/API/";
     private static final String API_KEY = "k_dag49j41";
     private final RestTemplate restTemplate = new RestTemplate();
+    public CastMemberFull getCastMember (String id) {
+        CastMemberFullDto castMemberFullDto = callGetRequest("/Name/{apiKey}/{id}", CastMemberFullDto.class, API_KEY, id);
+
+        return CastMemberFull.builder()
+                .id(castMemberFullDto.getId())
+                .name(castMemberFullDto.getName())
+                .role(castMemberFullDto.getRole())
+                .image(castMemberFullDto.getImage())
+                .summary(castMemberFullDto.getSummary())
+                .birthDate(castMemberFullDto.getBirthDate())
+                .deathDate(castMemberFullDto.getDeathDate())
+                .awards(castMemberFullDto.getAwards())
+                .height(castMemberFullDto.getHeight())
+                .castMovies(castMemberFullDto.getCastMovies())
+                .build();
+    }
+
 
     public MovieFull getMovie(String id) {
         MovieFullDto movieFullDto =  callGetRequest("Title/{apiKey}/{id}/FullCast,",

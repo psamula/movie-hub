@@ -7,10 +7,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
-@MappedSuperclass
+@Entity
 @Setter
 @Getter
-public class CastMemberShortEntity {
+@Table(name = "staffmember")
+public class StaffMemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -24,6 +25,6 @@ public class CastMemberShortEntity {
     @NotNull
     @Column(name = "name")
     private String name;
-    @Column(name = "staff_member_id")
-    private Long staff_member_id;
+    @Column(name = "department")
+    private String department;
 }

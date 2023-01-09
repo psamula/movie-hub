@@ -15,7 +15,7 @@ public class MovieRoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @NotNull
+//    @NotNull
     @Column(name = "movieid")
     private Long movieId;
     @NotNull
@@ -28,5 +28,4 @@ public class MovieRoleEntity {
     private String actorName;
     @Column(name = "ascharacter")
     private String asCharacter;
-
 }

@@ -1,6 +1,7 @@
-package com.myrestfulprojects.moviehub.model;
+package com.myrestfulprojects.moviehub.model.rating;
 
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
+import com.myrestfulprojects.moviehub.model.entities.MovieRoleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MovieWithRatingDTO {
-    private MovieEntity movie;
+public class CharacterWithRatingDTO {
+    private MovieRoleEntity movieRoleEntity;
     private int rating;
 }

@@ -1,11 +1,8 @@
 package com.myrestfulprojects.moviehub.controller;
 
 import com.myrestfulprojects.moviehub.model.MovieFull;
-import com.myrestfulprojects.moviehub.model.Movie;
 import com.myrestfulprojects.moviehub.model.MovieShort;
-import com.myrestfulprojects.moviehub.model.MovieWithRatingDTO;
-import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
-import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
+import com.myrestfulprojects.moviehub.model.rating.MovieWithRatingDTO;
 import com.myrestfulprojects.moviehub.model.rating.Rating;
 import com.myrestfulprojects.moviehub.service.MovieService;
 import lombok.RequiredArgsConstructor;
@@ -18,20 +15,12 @@ import java.util.List;
 public class MovieController {
     private final MovieService movieService;
 
-    @GetMapping("/myMovies")
-    public List<Movie> getMovies() {
-        return movieService.getMovies();
-    }
-    @GetMapping("/myMovie/{id}")
-    public Movie getMovie(@PathVariable long id) {
-        return movieService.getMovie(id);
-    }
     @GetMapping("/movie/{id}")
     public MovieFull getApiMovie(@PathVariable String id) {
         return movieService.getApiMovie(id);
     }
-    @GetMapping("/movies/trendy")
-    public List<MovieShort> getApiTrendyMovies() {
+    @GetMapping("/movies/trending")
+    public List<MovieShort> getApiTrendingMovies() {
         return movieService.getApiTrendyMovies();
     }
     @PostMapping("/rate/movies")
@@ -42,4 +31,5 @@ public class MovieController {
     public List<MovieWithRatingDTO> getRatedMovies() {
         return movieService.getRatedMovies();
     }
+
 }
