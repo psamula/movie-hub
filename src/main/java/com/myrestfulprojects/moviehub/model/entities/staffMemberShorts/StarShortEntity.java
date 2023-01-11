@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.model.entities.castMemberShorts;
+package com.myrestfulprojects.moviehub.model.entities.staffMemberShorts;
 
 import com.myrestfulprojects.moviehub.model.entities.CastMemberShortEntity;
 import lombok.Getter;

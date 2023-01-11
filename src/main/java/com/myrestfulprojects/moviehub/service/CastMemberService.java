@@ -1,7 +1,9 @@
 package com.myrestfulprojects.moviehub.service;
 
 import com.myrestfulprojects.moviehub.config.UserEntity;
+import com.myrestfulprojects.moviehub.exceptions.AuthorizationException;
 import com.myrestfulprojects.moviehub.exceptions.DuplicateEntityException;
+import com.myrestfulprojects.moviehub.exceptions.InvalidInputException;
 import com.myrestfulprojects.moviehub.model.CastMemberFull;
 import com.myrestfulprojects.moviehub.model.Department;
 import com.myrestfulprojects.moviehub.model.entities.*;
@@ -21,14 +23,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class CastMemberService {
-    //private final CastMemberRepository castMemberRepository;
+    private final AuthorizedUserFacade authorizedUserFacade;
     private final ImdbClient imdbClient;
     private final UserRepository userRepository;
     private final MovieImportService movieImportService;
     private final MovieRepository movieRepository;
     private final MovieRoleRepository movieRoleRepository;
     private final CharacterRatingRepository characterRatingRepository;
-    private final AuthorizedUserFacade authorizedUserFacade;
+
     private final StaffMemberRepository staffMemberRepository;
     private final StaffMemberRatingRepository staffMemberRatingRepository;
 
@@ -40,24 +42,25 @@ public class CastMemberService {
     public void rateStaffMember(String movieId, String memberImdbId, Rating rating, Long staffMemberId, Department department) {
 
         if (staffMemberId == null) {
-            staffMemberId = Long.valueOf(-1);
+            staffMemberId = (long) -1;
         }
         var staffMemberFromId = staffMemberRepository.findById(staffMemberId);
-        UserEntity currentUser = userRepository.findById(authorizedUserFacade.getCurrentUserId()).orElseThrow(EntityNotFoundException::new);
+        UserEntity currentUser = userRepository.findById(authorizedUserFacade.getCurrentUserId())
+                .orElseThrow(() -> new AuthorizationException("Cannot find authorized user"));
         StaffMemberEntity memberEntity;
         if (staffMemberFromId.isPresent()) {
             memberEntity = staffMemberFromId.get();
         }
         else {
             if (movieId == null || memberImdbId == null || department == null) {
-                throw new IllegalStateException("Invalid member rating input");
+                throw new InvalidInputException("Invalid member rating input");
             }
             memberEntity = getStaffMemberFromApi(movieId, memberImdbId, department);
         }
         var existingStaffMemberRating = staffMemberRatingRepository.findByUserAndStaffmember(currentUser, memberEntity);
         if (existingStaffMemberRating.isPresent()) {
             if (existingStaffMemberRating.get().getRating() == rating.getValue()) {
-                throw new DuplicateEntityException("staff member is already in database");
+                throw new DuplicateEntityException("Staff member is already in database");
             }
             existingStaffMemberRating.get().setRating(rating.getValue());
             staffMemberRatingRepository.save(existingStaffMemberRating.get());
@@ -72,24 +75,25 @@ public class CastMemberService {
     @Transactional
     public void rateCharacter(String movieId, String actorId, Rating rating, Long roleId) {
         if (roleId == null) {
-            roleId = Long.valueOf(-1);
+            roleId = (long) -1;
         }
         var movieRole = movieRoleRepository.findById(roleId);
-        UserEntity currentUser = userRepository.findById(authorizedUserFacade.getCurrentUserId()).orElseThrow(EntityNotFoundException::new);
+        UserEntity currentUser = userRepository.findById(authorizedUserFacade.getCurrentUserId())
+                .orElseThrow(() -> new AuthorizationException("Authorized user could not be found"));
         MovieRoleEntity role;
         if (movieRole.isPresent()) {
             role = movieRole.get();
         }
         else {
             if (movieId == null || actorId == null) {
-                throw new IllegalStateException("Invalid input");
+                throw new InvalidInputException("Invalid input");
             }
             role = getCharacterFromApi(movieId, actorId);
         }
         var existingCharacterRating = characterRatingRepository.findByUserAndMovierole(currentUser, role);
         if (existingCharacterRating.isPresent()) {
             if (existingCharacterRating.get().getRating() == rating.getValue()) {
-                throw new DuplicateEntityException("staff member is already in database");
+                throw new DuplicateEntityException("character is already in database");
             }
             existingCharacterRating.get().setRating(rating.getValue());
             characterRatingRepository.save(existingCharacterRating.get());
@@ -116,7 +120,7 @@ public class CastMemberService {
                 .filter(role -> role.getImdbId().equals(actorId))
                 .findFirst();
         if (movieRole.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("No character with such movieId and actorId could be found");
         }
         return movieRole.get();
     }
@@ -124,22 +128,19 @@ public class CastMemberService {
     public StaffMemberEntity getStaffMemberFromApi(String movieId, String memberImdbId, Department department) {
         MovieEntity movieEntity;
         movieEntity = movieImportService.getOrCreateMovieFromApi(movieId);
-//        if (optionalMovieEntity.isEmpty()) {
-//            movieEntity = movieImportService.getOrCreateMovieFromApi(movieId);
-//        } else {
-//            movieEntity = optionalMovieEntity.get();
-//        }
+
         var staffMember = new ArrayList<CastMemberShortEntity>();
         staffMember.addAll(movieEntity.getDirectorList());
         staffMember.addAll(movieEntity.getStarList());
         staffMember.addAll(movieEntity.getStarList());
+
         var extractedStaffMember = staffMember.stream()
-                .map(mem -> staffMemberRepository.findById(mem.getStaff_member_id()).get())
-                .filter(mem -> mem.getImdbId() == memberImdbId)
-                .filter(mem -> mem.getDepartment() == department.getDepartment())
+                .map(mem -> staffMemberRepository.findById(mem.getStaff_member_id()).orElseThrow(IllegalStateException::new))
+                .filter(mem -> mem.getImdbId().equals(memberImdbId))
+                .filter(mem -> mem.getDepartment().equals(department.getDepartment()))
                 .findFirst();
         if (extractedStaffMember.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("No staff member with such imdbid and movieid could be found");
         }
         return extractedStaffMember.get();
     }

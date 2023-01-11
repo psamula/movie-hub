@@ -10,9 +10,5 @@ import java.util.Optional;
 @Repository
 public interface StaffMemberRepository extends JpaRepository<StaffMemberEntity, Long> {
     Optional<StaffMemberEntity> findByMovieIdAndDepartment(Long movieId, String department);
-
-    Optional<StaffMemberEntity> findByMovieIdAndImdbIdAndDepartment(String movieId, String memberId, String department);
-
-    boolean existsByMovieIdAndImdbIdAndDepartment(String movieId, String memberImdbId, Department department);
 }
 

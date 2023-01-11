@@ -1,12 +1,8 @@
 package com.myrestfulprojects.moviehub.model.entities;
 
-import com.myrestfulprojects.moviehub.model.entities.castMemberShorts.DirectorShortEntity;
-import com.myrestfulprojects.moviehub.model.entities.castMemberShorts.StarShortEntity;
-import com.myrestfulprojects.moviehub.model.entities.castMemberShorts.WriterShortEntity;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.CastMemberShortDto;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieRoleDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.myrestfulprojects.moviehub.model.entities.staffMemberShorts.DirectorShortEntity;
+import com.myrestfulprojects.moviehub.model.entities.staffMemberShorts.StarShortEntity;
+import com.myrestfulprojects.moviehub.model.entities.staffMemberShorts.WriterShortEntity;
 import lombok.Getter;
 import lombok.Setter;
 

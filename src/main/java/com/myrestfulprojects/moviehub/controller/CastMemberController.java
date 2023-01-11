@@ -20,6 +20,14 @@ public class CastMemberController {
     public CastMemberFull getApiCastMember(@PathVariable String id) {
         return castMemberService.getApiCastMember(id);
     }
+    @GetMapping("cast-member/actors/rated")
+    public List<CharacterWithRatingDTO> getRatedCharacters() {
+        return this.castMemberService.getRatedCharacters();
+    }
+    @GetMapping("cast-member/staff-member/rated")
+    public List<StaffMemberWithRatingDTO> getRatedStaffMembers() {
+        return this.castMemberService.getRatedStaffMembers();
+    }
     @PostMapping("cast-member/actors/rate-character")
     public void rateCharacter(@RequestParam(required = false) String movieId,
                               @RequestParam(required = false) String actorId,
@@ -36,12 +44,5 @@ public class CastMemberController {
                                 @RequestParam(required = false) Department department) {
         this.castMemberService.rateStaffMember(movieId, memberImdbId, rating, staffMemberId, department);
     }
-    @GetMapping("cast-member/actors/rated")
-    public List<CharacterWithRatingDTO> getRatedCharacters() {
-        return this.castMemberService.getRatedCharacters();
-    }
-    @GetMapping("cast-member/staff-member/rated")
-    public List<StaffMemberWithRatingDTO> getRatedStaffMembers() {
-        return this.castMemberService.getRatedStaffMembers();
-    }
+
 }
