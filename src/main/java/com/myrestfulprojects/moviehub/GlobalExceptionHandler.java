@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -55,6 +57,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         ErrorResponse error = new ErrorResponse();
         var httpStatus = HttpStatus.UNAUTHORIZED;
+        error.setErrorCode(httpStatus.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<>(error, httpStatus);
+    }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse();
+        var httpStatus = HttpStatus.NOT_FOUND;
         error.setErrorCode(httpStatus.value());
         error.setMessage(ex.getMessage());
         return new ResponseEntity<>(error, httpStatus);

@@ -49,18 +49,14 @@ public class ExternalApiCastMemberService {
         MovieEntity movieEntity;
         movieEntity = movieImportService.getOrCreateMovieFromApi(movieId);
 
-        var staffMember = new ArrayList<CastMemberShortEntity>();
-        staffMember.addAll(movieEntity.getDirectorList());
-        staffMember.addAll(movieEntity.getStarList());
-        staffMember.addAll(movieEntity.getStarList());
+       var movieEntityStaffMembers = staffMemberRepository.findAllByMovieId(movieEntity.getId());
 
-        var extractedStaffMember = staffMember.stream()
-                .map(mem -> staffMemberRepository.findById(mem.getStaff_member_id()).orElseThrow(IllegalStateException::new))
+        var extractedStaffMember = movieEntityStaffMembers.stream()
                 .filter(mem -> mem.getImdbId().equals(memberImdbId))
                 .filter(mem -> mem.getDepartment().equals(department.getDepartment()))
                 .findFirst();
         if (extractedStaffMember.isEmpty()) {
-            throw new EntityNotFoundException("No staff member with such imdbid and movieid could be found");
+            throw new EntityNotFoundException("No staff member with such imdbid, department and movieid could be found");
         }
         return extractedStaffMember.get();
     }

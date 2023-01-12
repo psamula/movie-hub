@@ -24,10 +24,7 @@ import java.util.stream.Collectors;
 @Service
 public class CastMemberService {
     private final AuthorizedUserFacade authorizedUserFacade;
-    private final ImdbClient imdbClient;
     private final UserRepository userRepository;
-    private final MovieImportService movieImportService;
-    private final MovieRepository movieRepository;
     private final MovieRoleRepository movieRoleRepository;
     private final CharacterRatingRepository characterRatingRepository;
 
