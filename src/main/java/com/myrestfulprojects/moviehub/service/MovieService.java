@@ -1,10 +1,12 @@
 package com.myrestfulprojects.moviehub.service;
 
 import com.myrestfulprojects.moviehub.config.UserEntity;
-import com.myrestfulprojects.moviehub.exceptions.AuthorizationException;
+import com.myrestfulprojects.moviehub.exceptions.UnauthorizedException;
 import com.myrestfulprojects.moviehub.exceptions.DuplicateEntityException;
+import com.myrestfulprojects.moviehub.model.Genre;
 import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.MovieShort;
+import com.myrestfulprojects.moviehub.model.PaginationProvider;
 import com.myrestfulprojects.moviehub.model.rating.MovieWithRatingDTO;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
@@ -13,6 +15,7 @@ import com.myrestfulprojects.moviehub.repository.MovieRatingRepository;
 import com.myrestfulprojects.moviehub.repository.UserRepository;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.ImdbClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,23 +27,15 @@ import java.util.stream.Collectors;
 public class MovieService {
     private final MovieRatingRepository movieRatingRepository;
     private final UserRepository userRepository;
-    private final ImdbClient imdbClient;
     private final MovieImportService movieImportService;
     private final AuthorizedUserFacade authorizedUserFacade;
-
-    public MovieFull getApiMovie(String id) {
-        return imdbClient.getMovie(id);
-    }
-    public List<MovieShort> getApiTrendyMovies() {
-        return imdbClient.getTrendyMovies();
-    }
-
+    private final int PAGE_SIZE = 10;
 
     @Transactional
     public void rateMovie(String imdbId, Rating rating) {
 
         UserEntity currentUser = userRepository.findById(authorizedUserFacade.getCurrentUserId())
-                .orElseThrow(() -> new AuthorizationException("Authorized user not found"));
+                .orElseThrow(() -> new UnauthorizedException("Authorized user not found"));
         MovieEntity movieEntity = movieImportService.getOrCreateMovieFromApi(imdbId);
         var existingMovieRating = movieRatingRepository.findByUserAndMovie(currentUser, movieEntity);
         if (existingMovieRating.isPresent()) {
@@ -57,10 +52,12 @@ public class MovieService {
         movieRatingEntity.setUser(currentUser);
         movieRatingRepository.save(movieRatingEntity);
     }
-    public List<MovieWithRatingDTO> getRatedMovies() {
+    public List<MovieWithRatingDTO> getRatedMovies(int page, Genre genre) {
         var userId = authorizedUserFacade.getCurrentUserId();
-        return movieRatingRepository.findAll().stream()
+        String chosenGenre = genre != null ? genre.getGenre() : "";
+        return movieRatingRepository.findAll(PageRequest.of(page, PAGE_SIZE)).stream()
                 .filter(m -> m.getUser().getId() == userId)
+                .filter(m -> m.getMovie().getGenres().contains(chosenGenre))
                 .map(m -> new MovieWithRatingDTO(m.getMovie(), m.getRating()))
                 .collect(Collectors.toList());
     }

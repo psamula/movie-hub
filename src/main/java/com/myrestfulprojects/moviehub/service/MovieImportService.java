@@ -1,5 +1,6 @@
 package com.myrestfulprojects.moviehub.service;
 
+import com.myrestfulprojects.moviehub.model.Department;
 import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.entities.CastMemberShortEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
@@ -50,17 +51,17 @@ public class MovieImportService {
         convertedEntityDirectors.forEach(ent -> {
             ent.setMovieId(movieEntity.getId());
             castMemberShortRepository.save(ent);
-            ent.setStaff_member_id(insertStaffMemberRecord(ent.getName(), ent.getImdbId(), ent.getMovieId(), "director"));
+            ent.setStaff_member_id(insertStaffMemberRecord(ent.getName(), ent.getImdbId(), ent.getMovieId(), Department.DIRECTOR.getDepartment()));
         });
         convertedEntityWriters.forEach(ent -> {
             ent.setMovieId(movieEntity.getId());
             castMemberShortRepository.save(ent);
-            ent.setStaff_member_id(insertStaffMemberRecord(ent.getName(), ent.getImdbId(), ent.getMovieId(), "writer"));
+            ent.setStaff_member_id(insertStaffMemberRecord(ent.getName(), ent.getImdbId(), ent.getMovieId(), Department.WRITER.getDepartment()));
         });
         convertedEntityStars.forEach(ent -> {
             ent.setMovieId(movieEntity.getId());
             castMemberShortRepository.save(ent);
-            ent.setStaff_member_id(insertStaffMemberRecord(ent.getName(), ent.getImdbId(), ent.getMovieId(), "star"));
+            ent.setStaff_member_id(insertStaffMemberRecord(ent.getName(), ent.getImdbId(), ent.getMovieId(), Department.STAR.getDepartment()));
         });
 
 

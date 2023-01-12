@@ -1,6 +1,5 @@
 package com.myrestfulprojects.moviehub.webclient.imdbApi;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.myrestfulprojects.moviehub.exceptions.InvalidJsonFormatException;
 import com.myrestfulprojects.moviehub.model.CastMemberFull;
 import com.myrestfulprojects.moviehub.model.MovieFull;
@@ -75,7 +74,7 @@ public class ImdbClient {
     public <T> T callGetRequest (String url, Class<T> responseType, Object... objects) {
         return restTemplate.getForObject(IMDB_URL + url, responseType, objects);
     }
-    public List<MovieShort> getTrendyMovies() {
+    public List<MovieShort> getTrendingMovies() {
         var trendyMoviesDto = callGetRequest("MostPopularMovies/{apiKey}", MovieShortDtoWrapper.class, API_KEY);
         var trendyMoviesList = new ArrayList<MovieShort>();
         trendyMoviesDto.getItems().stream()

@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.config.registration.exceptions;
+package com.myrestfulprojects.moviehub.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

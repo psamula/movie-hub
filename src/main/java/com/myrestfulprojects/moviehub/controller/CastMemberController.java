@@ -6,6 +6,8 @@ import com.myrestfulprojects.moviehub.model.rating.CharacterWithRatingDTO;
 import com.myrestfulprojects.moviehub.model.rating.Rating;
 import com.myrestfulprojects.moviehub.model.rating.StaffMemberWithRatingDTO;
 import com.myrestfulprojects.moviehub.service.CastMemberService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,22 +15,23 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/cast-members")
+@Api("Browse and rate characters and cast members - directors, stars and writers")
 public class CastMemberController {
     private final CastMemberService castMemberService;
 
-    @GetMapping("/cast-member/{id}")
-    public CastMemberFull getApiCastMember(@PathVariable String id) {
-        return castMemberService.getApiCastMember(id);
-    }
-    @GetMapping("cast-member/actors/rated")
+    @GetMapping("/user/characters")
+    @ApiOperation(value = "Display all of your rated movie characters and rating")
     public List<CharacterWithRatingDTO> getRatedCharacters() {
         return this.castMemberService.getRatedCharacters();
     }
-    @GetMapping("cast-member/staff-member/rated")
+    @ApiOperation(value = "Display all of your rated staff members and rating")
+    @GetMapping("/user/staff-members")
     public List<StaffMemberWithRatingDTO> getRatedStaffMembers() {
         return this.castMemberService.getRatedStaffMembers();
     }
-    @PostMapping("cast-member/actors/rate-character")
+    @ApiOperation(value = "Rate a movie character")
+    @PostMapping("/characters/rate")
     public void rateCharacter(@RequestParam(required = false) String movieId,
                               @RequestParam(required = false) String actorId,
                               @RequestParam(required = true) Rating rating,
@@ -36,7 +39,8 @@ public class CastMemberController {
 
         this.castMemberService.rateCharacter(movieId, actorId, rating, movieRoleId);
     }
-    @PostMapping("cast-member/staff-member/rate-staff-member")
+    @ApiOperation(value = "Rate a movie staff member")
+    @PostMapping("/staff-members/rate")
     public void rateStaffMember(@RequestParam(required = false) String movieId,
                                 @RequestParam(required = false) String memberImdbId,
                                 @RequestParam(required = true) Rating rating,

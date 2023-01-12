@@ -3,7 +3,7 @@ package com.myrestfulprojects.moviehub.config.registration;
 import com.myrestfulprojects.moviehub.config.UserEntity;
 import com.myrestfulprojects.moviehub.config.registration.dto.RegistrationRequest;
 import com.myrestfulprojects.moviehub.config.registration.dto.RegistrationResponse;
-import com.myrestfulprojects.moviehub.config.registration.exceptions.UserAlreadyExistsException;
+import com.myrestfulprojects.moviehub.exceptions.UserAlreadyExistsException;
 import com.myrestfulprojects.moviehub.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;

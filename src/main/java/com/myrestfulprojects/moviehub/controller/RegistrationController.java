@@ -3,6 +3,7 @@ package com.myrestfulprojects.moviehub.controller;
 import com.myrestfulprojects.moviehub.config.registration.RegistrationFacade;
 import com.myrestfulprojects.moviehub.config.registration.dto.RegistrationRequest;
 import com.myrestfulprojects.moviehub.config.registration.dto.RegistrationResponse;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 public class RegistrationController {
     private final RegistrationFacade registrationFacade;
 
+    @ApiOperation("Register to the movie-hub")
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponse> registerUser (
             @RequestBody @Valid final RegistrationRequest registrationRequest) {

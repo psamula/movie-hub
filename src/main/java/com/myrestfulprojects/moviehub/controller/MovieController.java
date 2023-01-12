@@ -1,10 +1,13 @@
 package com.myrestfulprojects.moviehub.controller;
 
+import com.myrestfulprojects.moviehub.model.Genre;
 import com.myrestfulprojects.moviehub.model.MovieFull;
 import com.myrestfulprojects.moviehub.model.MovieShort;
 import com.myrestfulprojects.moviehub.model.rating.MovieWithRatingDTO;
 import com.myrestfulprojects.moviehub.model.rating.Rating;
 import com.myrestfulprojects.moviehub.service.MovieService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,24 +15,21 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/movies")
+@Api("Display and rate movies from database")
 public class MovieController {
     private final MovieService movieService;
-
-    @GetMapping("/movie/{id}")
-    public MovieFull getApiMovie(@PathVariable String id) {
-        return movieService.getApiMovie(id);
-    }
-    @GetMapping("/movies/trending")
-    public List<MovieShort> getApiTrendingMovies() {
-        return movieService.getApiTrendyMovies();
-    }
-    @PostMapping("/rate/movies")
-    public void rateMovie(@RequestParam(required = true) Rating rating, @RequestParam(required = true) String imdbId) {
+    @ApiOperation("Rate a movie")
+    @PostMapping("/{imdbId}/rate")
+    public void rateMovie(@PathVariable String imdbId, @RequestParam Rating rating) {
         movieService.rateMovie(imdbId, rating);
     }
-    @GetMapping("/user/movies")
-    public List<MovieWithRatingDTO> getRatedMovies() {
-        return movieService.getRatedMovies();
+
+    @ApiOperation("Display all of your rated movies and rating")
+    @GetMapping("/user")
+    public List<MovieWithRatingDTO> getRatedMovies(@RequestParam(required = false) Integer page, Genre genre) {
+        int pageNumber = page != null && page >= 1 ? page : 1;
+        return movieService.getRatedMovies(pageNumber - 1, genre);
     }
 
 }
