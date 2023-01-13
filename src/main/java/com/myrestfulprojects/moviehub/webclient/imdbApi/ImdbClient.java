@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 @Component
 public class ImdbClient {
     private static final String IMDB_URL = "https://imdb-api.com/en/API/";
-    private static final String API_KEY = "k_dag49j41";
+    private static final String API_KEY = "k_zbbq3lxc";
+    private static final String API_KEY2 = "k_dag49j41";
     private final RestTemplate restTemplate = new RestTemplate();
     public CastMemberFull getCastMember (String id) {
         try {
@@ -36,7 +37,7 @@ public class ImdbClient {
                     .castMovies(castMemberFullDto.getCastMovies())
                     .build();
         } catch (RuntimeException re) {
-            throw new InvalidJsonFormatException("Json from external api could not be mapped");
+            throw new InvalidJsonFormatException("Json cast member from external api could not be mapped");
         }
     }
 
@@ -65,7 +66,7 @@ public class ImdbClient {
                     .characters(shortenMovieRoleList(movieFullDto.getActorList(), 15)) //shortened list
                     .build();
         } catch (RuntimeException re) {
-            throw new InvalidJsonFormatException("Json from external api could not be mapped");
+            throw new InvalidJsonFormatException("Json full movie from external api could not be mapped");
         }
 
 
@@ -92,7 +93,7 @@ public class ImdbClient {
                                 .build()
                         );
                     } catch (RuntimeException re) {
-                        throw new InvalidJsonFormatException("Json from external api could not be mapped");
+                        throw new InvalidJsonFormatException("Json trending movies from external api could not be mapped");
                     }
                 });
         return trendyMoviesList;

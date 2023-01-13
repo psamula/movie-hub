@@ -45,16 +45,16 @@ public class MovieEntity {
     private LocalDate releaseDate;
     @Column(name = "image")
     private String image;
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "movieid")
     private List<DirectorShortEntity> directorList;
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "movieid")
     private List<WriterShortEntity> writerList;
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "movieid")
     private List<StarShortEntity> starList;
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "movieid")
     private List<MovieRoleEntity> actorList;
 }

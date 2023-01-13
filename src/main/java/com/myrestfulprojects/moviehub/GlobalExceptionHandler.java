@@ -2,6 +2,7 @@ package com.myrestfulprojects.moviehub;
 
 import com.myrestfulprojects.moviehub.exceptions.UserAlreadyExistsException;
 import com.myrestfulprojects.moviehub.exceptions.*;
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -65,6 +66,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
         ErrorResponse error = new ErrorResponse();
         var httpStatus = HttpStatus.NOT_FOUND;
+        error.setErrorCode(httpStatus.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<>(error, httpStatus);
+    }
+    @ExceptionHandler(PSQLException.class)
+    public ResponseEntity<ErrorResponse> handlePSQLException(PSQLException ex) {
+        ErrorResponse error = new ErrorResponse();
+        var httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         error.setErrorCode(httpStatus.value());
         error.setMessage(ex.getMessage());
         return new ResponseEntity<>(error, httpStatus);

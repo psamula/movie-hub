@@ -18,6 +18,7 @@ import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.CastMemberShortDto;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieRoleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,11 @@ public class MovieImportService {
     private final MovieRoleRepository movieRoleRepository;
     private final StaffMemberRepository staffMemberRepository;
 
+    @Transactional
     public MovieEntity getOrCreateMovieFromApi(String imdbId) {
-        if (movieRepository.existsByImdbId(imdbId)) {
-            return movieRepository.findByImdbId(imdbId).get();
+        Optional<MovieEntity> movieByImdbIdOpt = movieRepository.findByImdbId(imdbId);
+        if (movieByImdbIdOpt.isPresent()) {
+            return movieByImdbIdOpt.get();
         }
 
         var apiMovie = imdbClient.getMovie(imdbId);
@@ -62,15 +65,17 @@ public class MovieImportService {
             ent.setStaff_member_id(insertStaffMemberRecord(ent.getName(), ent.getImdbId(), ent.getMovieId(), Department.STAR.getDepartment()));
         });
 
+
         List<MovieRoleEntity> movieRoleEntities = apiMovie.getCharacters().stream()
                 .map(this::getMovieRoleEntity)
+                .filter(e -> !movieRoleRepository.existsByAsCharacterAndMovieIdAndImdbId(e.getAsCharacter(), e.getMovieId(), e.getImdbId()))
                 .collect(Collectors.toList());
-        movieRoleEntities.forEach(movieRoleEntity -> {
-            movieRoleEntity.setMovieId(movieEntity.getId());
-            if (!movieRoleRepository.existsByAsCharacterAndMovieId(movieRoleEntity.getAsCharacter(), movieRoleEntity.getMovieId())) {
-                movieRoleRepository.save(movieRoleEntity);
-            }
+
+        movieRoleEntities.forEach(movieRoleEnt-> {
+            movieRoleEnt.setMovieId(movieEntity.getId());
+            movieRoleRepository.save(movieRoleEnt);
         });
+
         movieEntity.setActorList(movieRoleEntities);
         movieRepository.save(movieEntity);
         return movieEntity;
@@ -138,7 +143,8 @@ public class MovieImportService {
         movieRoleEntity.setAsCharacter(movieRoleDto.getAsCharacter());
         return movieRoleEntity;
     }
-    private Long insertStaffMemberRecord(String name, String imdbId, Long movieId, String department) {
+    @Transactional
+    public Long insertStaffMemberRecord(String name, String imdbId, Long movieId, String department) {
         Optional<StaffMemberEntity> optionalMember = staffMemberRepository.findByMovieIdAndImdbIdAndDepartment(movieId, imdbId, department);
         if (optionalMember.isPresent()) {
             return optionalMember.get().getId();
@@ -149,8 +155,8 @@ public class MovieImportService {
         staffMember.setName(name);
         staffMember.setDepartment(department);
         staffMemberRepository.save(staffMember);
-        var idOfThisStaffMember = staffMember.getId();
-        return idOfThisStaffMember;
+
+        return staffMember.getId();
     }
 
 }
