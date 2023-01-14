@@ -1,7 +1,6 @@
-package com.myrestfulprojects.moviehub.config;
+package com.myrestfulprojects.moviehub.config.jwt.filters;
 
-import com.myrestfulprojects.moviehub.config.auth.JwtConfig;
-import com.myrestfulprojects.moviehub.config.auth.JwtSecretKey;
+import com.myrestfulprojects.moviehub.config.jwt.JwtConfig;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 

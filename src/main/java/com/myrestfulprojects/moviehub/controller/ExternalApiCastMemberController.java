@@ -1,8 +1,6 @@
 package com.myrestfulprojects.moviehub.controller;
 
-import com.myrestfulprojects.moviehub.model.CastMemberFull;
-import com.myrestfulprojects.moviehub.model.Department;
-import com.myrestfulprojects.moviehub.model.rating.Rating;
+import com.myrestfulprojects.moviehub.model.rating.castmembers.CastMemberFull;
 import com.myrestfulprojects.moviehub.service.ExternalApiCastMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

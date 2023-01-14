@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.model;
+package com.myrestfulprojects.moviehub.model.enums;
 
 public enum Department {
     ACTOR("ACTOR"),

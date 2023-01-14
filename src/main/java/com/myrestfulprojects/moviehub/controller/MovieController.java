@@ -1,10 +1,8 @@
 package com.myrestfulprojects.moviehub.controller;
 
-import com.myrestfulprojects.moviehub.model.Genre;
-import com.myrestfulprojects.moviehub.model.MovieFull;
-import com.myrestfulprojects.moviehub.model.MovieShort;
-import com.myrestfulprojects.moviehub.model.rating.MovieWithRatingDTO;
-import com.myrestfulprojects.moviehub.model.rating.Rating;
+import com.myrestfulprojects.moviehub.model.enums.Genre;
+import com.myrestfulprojects.moviehub.model.rating.dto.MovieWithRatingDTO;
+import com.myrestfulprojects.moviehub.model.enums.Rating;
 import com.myrestfulprojects.moviehub.service.MovieService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,10 +1,7 @@
 package com.myrestfulprojects.moviehub.service;
 
-import com.myrestfulprojects.moviehub.model.MovieFull;
-import com.myrestfulprojects.moviehub.model.MovieShort;
-import com.myrestfulprojects.moviehub.model.PaginationProvider;
-import com.myrestfulprojects.moviehub.repository.MovieRatingRepository;
-import com.myrestfulprojects.moviehub.repository.UserRepository;
+import com.myrestfulprojects.moviehub.model.movies.MovieFull;
+import com.myrestfulprojects.moviehub.model.movies.MovieShort;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.ImdbClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

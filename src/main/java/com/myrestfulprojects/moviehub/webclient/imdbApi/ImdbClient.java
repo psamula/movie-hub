@@ -1,9 +1,9 @@
 package com.myrestfulprojects.moviehub.webclient.imdbApi;
 
 import com.myrestfulprojects.moviehub.exceptions.InvalidJsonFormatException;
-import com.myrestfulprojects.moviehub.model.CastMemberFull;
-import com.myrestfulprojects.moviehub.model.MovieFull;
-import com.myrestfulprojects.moviehub.model.MovieShort;
+import com.myrestfulprojects.moviehub.model.rating.castmembers.CastMemberFull;
+import com.myrestfulprojects.moviehub.model.movies.MovieFull;
+import com.myrestfulprojects.moviehub.model.movies.MovieShort;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -63,7 +63,7 @@ public class ImdbClient {
                     .directorList(movieFullDto.getDirectorList())
                     .writerList(movieFullDto.getWriterList())
                     .starList(movieFullDto.getStarList())
-                    .characters(shortenMovieRoleList(movieFullDto.getActorList(), 15)) //shortened list
+                    .characters(shortenedMovieRoleList(movieFullDto.getActorList(), 15)) //shortened list
                     .build();
         } catch (RuntimeException re) {
             throw new InvalidJsonFormatException("Json full movie from external api could not be mapped");
@@ -98,7 +98,9 @@ public class ImdbClient {
                 });
         return trendyMoviesList;
     }
-    public List<MovieRoleDto> shortenMovieRoleList(List<MovieRoleDto> movieRoleDtoList, long limit) {
-        return movieRoleDtoList.stream().limit(limit).collect(Collectors.toList());
+    public List<MovieRoleDto> shortenedMovieRoleList(List<MovieRoleDto> movieRoleDtoList, long limit) {
+        return movieRoleDtoList.stream()
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 }

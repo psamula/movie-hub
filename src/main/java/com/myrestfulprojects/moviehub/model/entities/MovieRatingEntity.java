@@ -1,7 +1,6 @@
 package com.myrestfulprojects.moviehub.model.entities;
 
-import com.myrestfulprojects.moviehub.config.UserEntity;
-import com.myrestfulprojects.moviehub.model.rating.Rating;
+import com.myrestfulprojects.moviehub.config.user.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,7 +1,7 @@
 package com.myrestfulprojects.moviehub.service;
 
-import com.myrestfulprojects.moviehub.model.Department;
-import com.myrestfulprojects.moviehub.model.MovieFull;
+import com.myrestfulprojects.moviehub.model.enums.Department;
+import com.myrestfulprojects.moviehub.model.movies.MovieFull;
 import com.myrestfulprojects.moviehub.model.entities.CastMemberShortEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRoleEntity;

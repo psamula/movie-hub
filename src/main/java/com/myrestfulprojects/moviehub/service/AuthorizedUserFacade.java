@@ -4,6 +4,7 @@ import com.myrestfulprojects.moviehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 
 import java.util.UUID;
@@ -12,8 +13,8 @@ public class AuthorizedUserFacade {
     private final UserRepository userRepository;
     public UUID getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = (String)authentication.getPrincipal();
-        var userEntity = userRepository.findByUsername(username).orElseThrow(IllegalStateException::new);
+        User user = (User)authentication.getPrincipal();
+        var userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow(IllegalStateException::new);
         return userEntity.getId();
 
     }

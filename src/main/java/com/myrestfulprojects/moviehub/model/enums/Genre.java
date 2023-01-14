@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.model;
+package com.myrestfulprojects.moviehub.model.enums;
 
 import lombok.Getter;
 

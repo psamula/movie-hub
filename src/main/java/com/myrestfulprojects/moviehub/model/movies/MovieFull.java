@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.model;
+package com.myrestfulprojects.moviehub.model.movies;
 
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.CastMemberShortDto;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieRoleDto;

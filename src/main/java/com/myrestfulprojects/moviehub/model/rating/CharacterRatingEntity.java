@@ -1,7 +1,6 @@
 package com.myrestfulprojects.moviehub.model.rating;
 
-import com.myrestfulprojects.moviehub.config.UserEntity;
-import com.myrestfulprojects.moviehub.model.CastMemberFull;
+import com.myrestfulprojects.moviehub.config.user.UserEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRoleEntity;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.model.rating;
+package com.myrestfulprojects.moviehub.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

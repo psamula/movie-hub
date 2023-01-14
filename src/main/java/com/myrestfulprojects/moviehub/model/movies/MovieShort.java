@@ -1,10 +1,8 @@
-package com.myrestfulprojects.moviehub.model;
+package com.myrestfulprojects.moviehub.model.movies;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Builder
 @Getter

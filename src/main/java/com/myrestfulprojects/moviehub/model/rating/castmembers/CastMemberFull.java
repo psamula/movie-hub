@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.model;
+package com.myrestfulprojects.moviehub.model.rating.castmembers;
 
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieParticipationDto;
 import lombok.Builder;

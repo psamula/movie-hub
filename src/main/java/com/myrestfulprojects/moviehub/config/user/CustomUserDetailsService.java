@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.config;
+package com.myrestfulprojects.moviehub.config.user;
 
 import com.myrestfulprojects.moviehub.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.myrestfulprojects.moviehub.repository;
 
-import com.myrestfulprojects.moviehub.config.UserEntity;
+import com.myrestfulprojects.moviehub.config.user.UserEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

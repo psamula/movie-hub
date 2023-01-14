@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.config.auth;
+package com.myrestfulprojects.moviehub.config.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

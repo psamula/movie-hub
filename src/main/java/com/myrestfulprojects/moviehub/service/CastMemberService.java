@@ -1,23 +1,21 @@
 package com.myrestfulprojects.moviehub.service;
 
-import com.myrestfulprojects.moviehub.config.UserEntity;
+import com.myrestfulprojects.moviehub.config.user.UserEntity;
 import com.myrestfulprojects.moviehub.exceptions.UnauthorizedException;
 import com.myrestfulprojects.moviehub.exceptions.DuplicateEntityException;
 import com.myrestfulprojects.moviehub.exceptions.InvalidInputException;
-import com.myrestfulprojects.moviehub.model.CastMemberFull;
-import com.myrestfulprojects.moviehub.model.Department;
+import com.myrestfulprojects.moviehub.model.enums.Department;
 import com.myrestfulprojects.moviehub.model.entities.*;
+import com.myrestfulprojects.moviehub.model.enums.Rating;
 import com.myrestfulprojects.moviehub.model.rating.*;
+import com.myrestfulprojects.moviehub.model.rating.dto.CharacterWithRatingDTO;
+import com.myrestfulprojects.moviehub.model.rating.dto.StaffMemberWithRatingDTO;
 import com.myrestfulprojects.moviehub.repository.*;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.ImdbClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor

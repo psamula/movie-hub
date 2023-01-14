@@ -1,6 +1,6 @@
 package com.myrestfulprojects.moviehub.config.registration.dto;
 
-import com.myrestfulprojects.moviehub.config.UserEntity;
+import com.myrestfulprojects.moviehub.config.user.UserEntity;
 
 import java.util.UUID;
 

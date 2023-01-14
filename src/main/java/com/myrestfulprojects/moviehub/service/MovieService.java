@@ -1,19 +1,15 @@
 package com.myrestfulprojects.moviehub.service;
 
-import com.myrestfulprojects.moviehub.config.UserEntity;
+import com.myrestfulprojects.moviehub.config.user.UserEntity;
 import com.myrestfulprojects.moviehub.exceptions.UnauthorizedException;
 import com.myrestfulprojects.moviehub.exceptions.DuplicateEntityException;
-import com.myrestfulprojects.moviehub.model.Genre;
-import com.myrestfulprojects.moviehub.model.MovieFull;
-import com.myrestfulprojects.moviehub.model.MovieShort;
-import com.myrestfulprojects.moviehub.model.PaginationProvider;
-import com.myrestfulprojects.moviehub.model.rating.MovieWithRatingDTO;
+import com.myrestfulprojects.moviehub.model.enums.Genre;
+import com.myrestfulprojects.moviehub.model.rating.dto.MovieWithRatingDTO;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
-import com.myrestfulprojects.moviehub.model.rating.Rating;
+import com.myrestfulprojects.moviehub.model.enums.Rating;
 import com.myrestfulprojects.moviehub.repository.MovieRatingRepository;
 import com.myrestfulprojects.moviehub.repository.UserRepository;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.ImdbClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

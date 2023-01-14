@@ -1,10 +1,9 @@
 package com.myrestfulprojects.moviehub.controller;
 
-import com.myrestfulprojects.moviehub.model.CastMemberFull;
-import com.myrestfulprojects.moviehub.model.Department;
-import com.myrestfulprojects.moviehub.model.rating.CharacterWithRatingDTO;
-import com.myrestfulprojects.moviehub.model.rating.Rating;
-import com.myrestfulprojects.moviehub.model.rating.StaffMemberWithRatingDTO;
+import com.myrestfulprojects.moviehub.model.enums.Department;
+import com.myrestfulprojects.moviehub.model.rating.dto.CharacterWithRatingDTO;
+import com.myrestfulprojects.moviehub.model.enums.Rating;
+import com.myrestfulprojects.moviehub.model.rating.dto.StaffMemberWithRatingDTO;
 import com.myrestfulprojects.moviehub.service.CastMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

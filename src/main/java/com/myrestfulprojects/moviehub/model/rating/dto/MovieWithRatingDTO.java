@@ -1,4 +1,4 @@
-package com.myrestfulprojects.moviehub.model.rating;
+package com.myrestfulprojects.moviehub.model.rating.dto;
 
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import lombok.AllArgsConstructor;

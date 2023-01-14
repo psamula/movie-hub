@@ -1,8 +1,7 @@
 package com.myrestfulprojects.moviehub.service;
 
-import com.myrestfulprojects.moviehub.model.CastMemberFull;
-import com.myrestfulprojects.moviehub.model.Department;
-import com.myrestfulprojects.moviehub.model.entities.CastMemberShortEntity;
+import com.myrestfulprojects.moviehub.model.rating.castmembers.CastMemberFull;
+import com.myrestfulprojects.moviehub.model.enums.Department;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRoleEntity;
 import com.myrestfulprojects.moviehub.model.entities.StaffMemberEntity;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.Optional;
 @RequiredArgsConstructor
 @Service

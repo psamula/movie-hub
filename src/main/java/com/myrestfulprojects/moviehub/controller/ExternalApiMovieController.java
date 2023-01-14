@@ -1,7 +1,7 @@
 package com.myrestfulprojects.moviehub.controller;
 
-import com.myrestfulprojects.moviehub.model.MovieFull;
-import com.myrestfulprojects.moviehub.model.MovieShort;
+import com.myrestfulprojects.moviehub.model.movies.MovieFull;
+import com.myrestfulprojects.moviehub.model.movies.MovieShort;
 import com.myrestfulprojects.moviehub.service.ExternalApiMovieService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
