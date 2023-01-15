@@ -1,5 +1,6 @@
 package com.myrestfulprojects.moviehub.config;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ import static java.util.Collections.singletonList;
 
 @Configuration
 @EnableSwagger2
+@EnableCaching
 public class Config {
     @Bean
     public Docket swaggerApi() {

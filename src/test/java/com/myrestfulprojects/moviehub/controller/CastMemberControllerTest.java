@@ -5,14 +5,10 @@ import com.myrestfulprojects.moviehub.config.user.UserEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRoleEntity;
 import com.myrestfulprojects.moviehub.model.entities.StaffMemberEntity;
-import com.myrestfulprojects.moviehub.model.entities.staffMemberShorts.DirectorShortEntity;
 import com.myrestfulprojects.moviehub.model.enums.Department;
 import com.myrestfulprojects.moviehub.model.enums.Rating;
-import com.myrestfulprojects.moviehub.model.rating.CharacterRatingEntity;
 import com.myrestfulprojects.moviehub.model.rating.dto.CharacterWithRatingDTO;
 import com.myrestfulprojects.moviehub.repository.*;
-import com.myrestfulprojects.moviehub.utils.ImdbApiTestUtils;
-
 import com.myrestfulprojects.moviehub.utils.TestDataProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +19,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,20 +36,10 @@ public class CastMemberControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private ImdbApiTestUtils imdbApiTestUtils;
 
-    @Autowired
-    private MovieRepository movieRepository;
-    @Autowired
-    private MovieRatingRepository movieRatingRepository;
-    @Autowired
-    private UserRepository userRepository;
     private final String TESTER_USERNAME = "mymockinguser";
     @Autowired
     private CharacterRatingRepository characterRatingRepository;
-    @Autowired
-    private MovieRoleRepository movieRoleRepository;
     @Autowired
     private TestDataProvider testDataProvider;
     @Autowired
@@ -66,23 +50,13 @@ public class CastMemberControllerTest {
     @WithMockUser(username = TESTER_USERNAME)
     void shouldGetUserRatedCharacters() throws Exception {
         //given
-        UserEntity mockingUser = new UserEntity();
-        mockingUser.setUsername(TESTER_USERNAME);
-        mockingUser.setPassword("testpassword");
-        userRepository.save(mockingUser);
-
-        MovieRoleEntity expectedMovieRole = imdbApiTestUtils.generateTestMovieCharacter();
-        movieRoleRepository.save(expectedMovieRole);
+        UserEntity mockingUser = testDataProvider.getAndSaveTestUserEntityOfUsername(TESTER_USERNAME);
+        MovieRoleEntity expectedMovieRole = testDataProvider.getAndSaveTestMovieCharacter();
         Rating testyRating = Rating.TWO;
 
-        CharacterRatingEntity expectedCharacterRating = new CharacterRatingEntity();
-        expectedCharacterRating.setUser(mockingUser);
-        expectedCharacterRating.setMovierole(expectedMovieRole);
-        expectedCharacterRating.setRating(testyRating.getValue());
 
-        characterRatingRepository.save(expectedCharacterRating);
-
-        CharacterWithRatingDTO expectedCharacterWithRatingDto = new CharacterWithRatingDTO(expectedMovieRole, testyRating.getValue());
+        CharacterWithRatingDTO expectedCharacterWithRatingDto = testDataProvider
+                .getAndSaveCharacterWithRatingDTO(expectedMovieRole, mockingUser, testyRating);
 
         //when
         MvcResult mvcResult = mockMvc.perform(get("/cast-members/user/characters"))
