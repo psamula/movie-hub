@@ -14,6 +14,8 @@ public class AuthorizedUserFacade {
     public UUID getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User)authentication.getPrincipal();
+        var testedUser = userRepository.findByUsername("mymockinguser");
+        var x = testedUser.get().getId();
         var userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow(IllegalStateException::new);
         return userEntity.getId();
 

@@ -1,20 +1,16 @@
 package com.myrestfulprojects.moviehub.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myrestfulprojects.moviehub.config.user.UserEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
 import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
 import com.myrestfulprojects.moviehub.model.enums.Rating;
-import com.myrestfulprojects.moviehub.model.movies.MovieFull;
-import com.myrestfulprojects.moviehub.model.movies.MovieShort;
 import com.myrestfulprojects.moviehub.model.rating.dto.MovieWithRatingDTO;
 import com.myrestfulprojects.moviehub.repository.MovieRatingRepository;
 import com.myrestfulprojects.moviehub.repository.MovieRepository;
 import com.myrestfulprojects.moviehub.repository.UserRepository;
 import com.myrestfulprojects.moviehub.utils.ImdbApiTestUtils;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieShortDtoWrapper;
-import lombok.RequiredArgsConstructor;
+import com.myrestfulprojects.moviehub.utils.TestDataProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,11 +20,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,29 +47,19 @@ public class MovieControllerTest {
     private MovieRatingRepository movieRatingRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TestDataProvider testDataProvider;
     private final String TESTER_USERNAME = "mymockinguser";
     @Test
     @Transactional
     @WithMockUser(username = TESTER_USERNAME)
     void shouldGetUserRatedMovies() throws Exception {
         //given
-        UserEntity mockingUser = new UserEntity();
-        mockingUser.setUsername(TESTER_USERNAME);
-        mockingUser.setPassword("testpassword");
-        userRepository.save(mockingUser);
+        var testUser = testDataProvider.getAndSaveTestUserEntityOfUsername(TESTER_USERNAME);
+        var movieEntity = testDataProvider.getAndSaveTestMovieEntity();
+        var rating = Rating.ONE;
 
-
-        MovieEntity ratedMovie = imdbApiTestUtils.generateTestMovieEntity();
-        movieRepository.save(ratedMovie);
-
-        Rating testyRating = Rating.TWO;
-        MovieRatingEntity testyMovieRating = new MovieRatingEntity();
-        testyMovieRating.setMovie(ratedMovie);
-        testyMovieRating.setUser(mockingUser);
-        testyMovieRating.setRating(testyRating.getValue());
-        movieRatingRepository.save(testyMovieRating);
-
-        MovieWithRatingDTO expectedMovieWithRatingDto = new MovieWithRatingDTO(ratedMovie, testyRating.getValue());
+        MovieWithRatingDTO expectedMovieWithRatingDto = testDataProvider.getAndSaveTestMovieWithRatingDTO(movieEntity, testUser, rating);
 
         //when
         MvcResult mvcResult = mockMvc.perform(get("/movies/user"))
@@ -93,33 +77,27 @@ public class MovieControllerTest {
     @Test
     @Transactional
     @WithMockUser(username = TESTER_USERNAME)
-    void shouldSuccesfullyRateAMovie() throws Exception {
+    void shouldSuccessfullyRateAMovie() throws Exception {
         //given
-        UserEntity mockingUser = new UserEntity();
-        mockingUser.setUsername(TESTER_USERNAME);
-        mockingUser.setPassword("testpassword");
-        userRepository.save(mockingUser);
-
-        Rating myRating = Rating.THREE;
-
-        var ratedMovie = imdbApiTestUtils.generateTestMovieEntity();
-        movieRepository.save(ratedMovie);
+        var testUser = testDataProvider.getAndSaveTestUserEntityOfUsername(TESTER_USERNAME);
+        var expectedMovie = testDataProvider.getAndSaveTestMovieEntity();
+        var expectedRating = Rating.ONE;
 
         //when
-        mockMvc.perform(post("/movies/" + ratedMovie.getImdbId() + "/rate")
-                        .param("rating", myRating.name())
+        mockMvc.perform(post("/movies/" + expectedMovie.getImdbId() + "/rate")
+                        .param("rating", expectedRating.name())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
         //then
-        var resultMovieRatingRecordOpt = movieRatingRepository.findByUserAndMovie(mockingUser, ratedMovie);
+        var resultMovieRatingRecordOpt = movieRatingRepository.findByUserAndMovie(testUser, expectedMovie);
 
         assertThat(resultMovieRatingRecordOpt).isPresent();
-        assertThat(resultMovieRatingRecordOpt.get().getMovie()).usingRecursiveComparison().isEqualTo(ratedMovie);
-        assertThat(resultMovieRatingRecordOpt.get().getRating()).usingRecursiveComparison().isEqualTo(myRating.getValue());
-        assertThat(resultMovieRatingRecordOpt.get().getUser()).usingRecursiveComparison().isEqualTo(mockingUser);
+        assertThat(resultMovieRatingRecordOpt.get().getMovie()).usingRecursiveComparison().isEqualTo(expectedMovie);
+        assertThat(resultMovieRatingRecordOpt.get().getRating()).usingRecursiveComparison().isEqualTo(expectedRating.getValue());
+        assertThat(resultMovieRatingRecordOpt.get().getUser()).usingRecursiveComparison().isEqualTo(testUser);
 
     }
 

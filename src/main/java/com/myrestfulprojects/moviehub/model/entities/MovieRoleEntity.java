@@ -15,7 +15,6 @@ public class MovieRoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-//    @NotNull
     @Column(name = "movieid")
     private Long movieId;
     @NotNull

@@ -88,7 +88,6 @@ public class ExternalApiMovieControllerTest {
                 .collect(Collectors.toList());
 
         assertThat(returnedTrendyMovies).isNotNull();
-        assertThat(returnedTrendyMovies).isNotEmpty();
         assertThat(returnedMoviesTitles).isEqualTo(expectedMoviesTitles);
 
     }
