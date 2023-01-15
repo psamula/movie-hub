@@ -1,7 +1,6 @@
 package com.myrestfulprojects.moviehub.webclient.imdbApi;
 
 import com.myrestfulprojects.moviehub.exceptions.InvalidJsonFormatException;
-import com.myrestfulprojects.moviehub.exceptions.ObjectWithImdbIdNotFound;
 import com.myrestfulprojects.moviehub.model.rating.castmembers.CastMemberFull;
 import com.myrestfulprojects.moviehub.model.movies.MovieFull;
 import com.myrestfulprojects.moviehub.model.movies.MovieShort;
@@ -19,14 +18,12 @@ import java.util.stream.Collectors;
 @Component
 public class ImdbClient {
     private static final String IMDB_URL = "https://imdb-api.com/en/API/";
-    private static final String API_KEY2 = "k_zbbq3lxc";
-    private static final String API_KEY = "k_dag49j41";
+    private static final String API_KEY = "k_zbbq3lxc";
+    private static final String API_KEY2 = "k_dag49j41";
     private final RestTemplate restTemplate = new RestTemplate();
     public CastMemberFull getCastMember (String id) {
-        String memberId = null;
         try {
             CastMemberFullDto castMemberFullDto = callGetRequest("/Name/{apiKey}/{id}", CastMemberFullDto.class, API_KEY, id);
-            memberId = castMemberFullDto.getId();
             return CastMemberFull.builder()
                     .id(castMemberFullDto.getId())
                     .name(castMemberFullDto.getName())
@@ -40,21 +37,16 @@ public class ImdbClient {
                     .castMovies(castMemberFullDto.getCastMovies())
                     .build();
         } catch (RuntimeException re) {
-            if (memberId == null) {
-                throw new ObjectWithImdbIdNotFound("CastMember with such imdbId could not be found");
-            }
             throw new InvalidJsonFormatException("Json cast member from external api could not be mapped");
         }
     }
 
 
     public MovieFull getMovie(String id) {
-        String movieId = null;
         try {
             MovieFullDto movieFullDto = callGetRequest("Title/{apiKey}/{id}/FullCast,",
                     MovieFullDto.class, API_KEY, id);
-            movieId = movieFullDto.getId();
-            MovieFull movieFull = MovieFull.builder()
+            return MovieFull.builder()
                     .imdbId(movieFullDto.getId())
                     .title(movieFullDto.getTitle())
                     .fullTitle(movieFullDto.getFullTitle())
@@ -73,14 +65,11 @@ public class ImdbClient {
                     .starList(movieFullDto.getStarList())
                     .characters(shortenedMovieRoleList(movieFullDto.getActorList(), 15)) //shortened list
                     .build();
-            return movieFull;
-        }
-        catch (RuntimeException re) {
-            if (movieId == null) {
-                throw new ObjectWithImdbIdNotFound("Could not find Movie with such id");
-            }
+        } catch (RuntimeException re) {
             throw new InvalidJsonFormatException("Json full movie from external api could not be mapped");
         }
+
+
     }
 
     public <T> T callGetRequest (String url, Class<T> responseType, Object... objects) {

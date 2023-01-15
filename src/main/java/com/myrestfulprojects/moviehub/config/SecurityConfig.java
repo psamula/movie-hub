@@ -7,7 +7,6 @@ import com.myrestfulprojects.moviehub.config.user.CustomUserDetailsService;
 import com.myrestfulprojects.moviehub.repository.UserRepository;
 import com.myrestfulprojects.moviehub.service.AuthorizedUserFacade;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,11 +15,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.SecretKey;
@@ -56,7 +53,6 @@ public class SecurityConfig {
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
     };
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -64,9 +60,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .mvcMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated())
-                .exceptionHandling()
-                .authenticationEntryPoint(this.authenticationEntryPoint())
-                .and()
                 .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests()
@@ -99,9 +92,5 @@ public class SecurityConfig {
     @Bean
     public AuthorizedUserFacade authorizedUserFacade() {
         return new AuthorizedUserFacade(userRepository);
-    }
-    @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return new CustomAuthenticationEntryPoint();
     }
 }

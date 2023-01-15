@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class JwtAuthorizationTest {
+public class AuthorizationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -41,12 +41,13 @@ public class JwtAuthorizationTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String token = login.getResponse().getHeader("Authorization");
-        mockMvc.perform(get("/some/not-found/secured/endpoint")
-                        .header("Authorization", token))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/some/umapped/secured/endpoint")
+                        .header("Authorization", token)
+                )
+                .andExpect(status().is(404));
     }
     @Test
-    void shouldThrow401UnauthorizedException_whenUnauthorizedUser() throws Exception {
+    void shouldThrow403ForbiddenException_whenUnauthorizedUser() throws Exception {
         //given
         String validLogin = "admin";
         String validPassword = "test";
@@ -62,7 +63,8 @@ public class JwtAuthorizationTest {
                 .andExpect(status().isOk())
                 .andReturn();
         //then
+
         mockMvc.perform(get("/some/umapped/secured/endpoint"))
-                .andExpect(status().is(401));   // does not contain valid Authorization header
+                .andExpect(status().is(403));   // does not contain valid Authorization header
     }
 }
