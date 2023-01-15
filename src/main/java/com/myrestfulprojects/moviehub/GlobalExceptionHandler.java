@@ -78,5 +78,13 @@ public class GlobalExceptionHandler {
         error.setMessage(ex.getMessage());
         return new ResponseEntity<>(error, httpStatus);
     }
+    @ExceptionHandler(ObjectWithImdbIdNotFound.class)
+    public ResponseEntity<ErrorResponse> handleObjectWithImdbIdNotFound(ObjectWithImdbIdNotFound ex) {
+        ErrorResponse error = new ErrorResponse();
+        var httpStatus = HttpStatus.NO_CONTENT;
+        error.setErrorCode(httpStatus.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<>(error, httpStatus);
+    }
 
 }

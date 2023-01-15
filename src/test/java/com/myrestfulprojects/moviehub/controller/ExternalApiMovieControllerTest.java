@@ -4,27 +4,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myrestfulprojects.moviehub.model.movies.MovieFull;
 import com.myrestfulprojects.moviehub.model.movies.MovieShort;
+import com.myrestfulprojects.moviehub.utils.TestDataProvider;
 import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieShortDto;
-import com.myrestfulprojects.moviehub.webclient.imdbApi.dto.MovieShortDtoWrapper;
-import lombok.RequiredArgsConstructor;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -39,6 +30,8 @@ public class ExternalApiMovieControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private TestDataProvider testDataProvider;
     @Test
     @Transactional
     void shouldGetApiMovie() throws Exception {
@@ -65,10 +58,7 @@ public class ExternalApiMovieControllerTest {
     @Transactional
     void shouldRGetApiTrendingMovies() throws Exception {
         //given
-        RestTemplate restTemplate = new RestTemplate();
-        var shortDtoWrapper = restTemplate.getForObject(
-                "https://imdb-api.com/en/API/MostPopularMovies/k_zbbq3lxc", MovieShortDtoWrapper.class);
-        var expectedMoviesTitles = shortDtoWrapper.getItems().stream()
+        List<String> expectedTrendingMoviesTitles = testDataProvider.getTrendyMovies().stream()
                 .limit(10)
                 .map(MovieShortDto::getTitle)
                 .collect(Collectors.toList());
@@ -88,8 +78,6 @@ public class ExternalApiMovieControllerTest {
                 .collect(Collectors.toList());
 
         assertThat(returnedTrendyMovies).isNotNull();
-        assertThat(returnedMoviesTitles).isEqualTo(expectedMoviesTitles);
-
+        assertThat(returnedMoviesTitles).isEqualTo(expectedTrendingMoviesTitles);
     }
-
 }

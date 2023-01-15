@@ -1,15 +1,9 @@
 package com.myrestfulprojects.moviehub.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myrestfulprojects.moviehub.config.user.UserEntity;
-import com.myrestfulprojects.moviehub.model.entities.MovieEntity;
-import com.myrestfulprojects.moviehub.model.entities.MovieRatingEntity;
 import com.myrestfulprojects.moviehub.model.enums.Rating;
 import com.myrestfulprojects.moviehub.model.rating.dto.MovieWithRatingDTO;
 import com.myrestfulprojects.moviehub.repository.MovieRatingRepository;
-import com.myrestfulprojects.moviehub.repository.MovieRepository;
-import com.myrestfulprojects.moviehub.repository.UserRepository;
-import com.myrestfulprojects.moviehub.utils.ImdbApiTestUtils;
 import com.myrestfulprojects.moviehub.utils.TestDataProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +14,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,14 +31,8 @@ public class MovieControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private ImdbApiTestUtils imdbApiTestUtils;
-
-    @Autowired
-    private MovieRepository movieRepository;
-    @Autowired
     private MovieRatingRepository movieRatingRepository;
-    @Autowired
-    private UserRepository userRepository;
+
     @Autowired
     private TestDataProvider testDataProvider;
     private final String TESTER_USERNAME = "mymockinguser";
