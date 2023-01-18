@@ -1,3 +1,0 @@
---liquibase formatted sql
---changeset psamula:1
---
