@@ -50,6 +50,21 @@ SET default_table_access_method = heap;
 -- Name: authorities; Type: TABLE; Schema: public; Owner: postgres
 --
 
+--
+-- TOC entry 216 (class 1259 OID 24595)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+                              id uuid NOT NULL,
+                              username character varying(50) NOT NULL,
+                              password character varying(100) NOT NULL,
+                              enabled boolean NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
 CREATE TABLE public.authorities (
                                     username character varying(50) NOT NULL,
                                     authority character varying(50) NOT NULL
@@ -344,20 +359,7 @@ ALTER TABLE public.starshort_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.starshort_id_seq OWNED BY public.starshort.id;
 
 
---
--- TOC entry 216 (class 1259 OID 24595)
--- Name: users; Type: TABLE; Schema: public; Owner: postgres
---
 
-CREATE TABLE public.users (
-                              id uuid NOT NULL,
-                              username character varying(50) NOT NULL,
-                              password character varying(100) NOT NULL,
-                              enabled boolean NOT NULL
-);
-
-
-ALTER TABLE public.users OWNER TO postgres;
 
 --
 -- TOC entry 222 (class 1259 OID 32793)
