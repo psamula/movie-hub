@@ -45,7 +45,7 @@ Once the application is running, you can access it by navigating to [localhost:8
 ### Create new user and log in
 1. In order to use this application you need to register first. Navigate to registration-controller and post credentials to register new account.
 2. After registration you should log yourself in. To do that, navigate to login-controller and log-in with your credentials.
-3. Following the receiving of status code 200, copy the JWT token and authorize yourself. From this moment you'll be able to access all of the secured endpoints freely.
+3. Following the receiving of status code 200, copy the JWT token and authorize yourself. From this moment on, you'll be able to access all of the secured endpoints freely.
 ### Use the functionalities
 4. Supposing you're planning to watch some movie this evening. First, head to external-api-movie-controller and GET recently trending movies list. Now you've got to chose an appropriate movie to your liking!
 5. You can also display full movie details by inputting imdbId of chosen film to the "Display movie details" endpoint.
