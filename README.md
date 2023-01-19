@@ -4,6 +4,7 @@
   * [Technologies Used](#technologies-used)
   * [Installation and Setup](#installation-and-setup)
   * [Usage](#usage)
+  * [Example usage scenario](#example-usage-scenario)
   * [Requirements](#requirements)
 
 ## General info
