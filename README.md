@@ -11,7 +11,7 @@
 functionalities as: browsing and retrieving movies from external IMDb API,
 facilitating its users to post ratings of each movie, character, and cast
 member. Furthermore, Movie-Hub includes stateless user authentication via
-JWT.
+JWT.  
 It's fully integration-tested and dockerized.
 
 ## Technologies Used
@@ -34,7 +34,6 @@ It's fully integration-tested and dockerized.
 3. Build the project's jar file: ```mvnw clean install```
 4. Then build docker image using the built .jar: ```docker-compose build```
 5. Run the whole setup of Movie-Hub + PostgreSQL using ```docker-compose up```
-6. The application will run on 
 
 ## Usage
 Once the application is running, you can access it by navigating to `localhost:8080 (however, I recommend using localhost:8080/swagger-ui/ for more convenient testing and access to documentation
