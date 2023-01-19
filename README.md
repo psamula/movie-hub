@@ -55,7 +55,7 @@ Once the application is running, you can access it by navigating to [localhost:8
 8. You can access all your ratings any time you want by accessing proper endpoints "display movie ratings" in movie-controller or "display character ratings", "display staff member ratings" in cast-member-controller. The contents of these endpoints are assigned to each user separately.
 ### Other
 9. Note that you can also freely display all movies, actors and staff members without rating. To do that, only thing you need is their imdb id available on [IMDb](http://imdb.com) 
-10. If you want to rate actors or staff members without rating the movies you can do that effortlessly by accessing rating endpoints and specifying movie imdb ID, cast member imdb ID and their department in that film while inputting character ID or staff member ID completely empty.
+10. If you want to rate actors or staff members without rating the movies you can do that effortlessly by accessing rating endpoints and specifying movie imdb ID, cast member imdb ID and their department in that film while leaving character ID or staff member ID input placeholders completely empty.
 
 ## Requirements
 To run this app you'll need:
