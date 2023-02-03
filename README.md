@@ -37,7 +37,7 @@ It's fully integration-tested and dockerized.
 5. Run the whole setup of Movie-Hub + PostgreSQL using ```docker-compose up```
 
 ## Usage
-Once the application is running, you can access it by navigating to [localhost:8080](http://localhost:8080) (however, I recommend using [localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/) for more convenient testing and access to documentation  
+Once the application is running, you can access it by navigating to [localhost:8080](http://localhost:8080) (however, I recommend using [localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/) for more convenient testing and access to documentation)
 
 ![moviehubswagger](https://user-images.githubusercontent.com/92303720/213501490-3ae1e9e6-be11-4e9c-9c23-3d56155fe7c5.png)
 
